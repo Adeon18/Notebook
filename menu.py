@@ -3,7 +3,9 @@ from notebook import Notebook, Note
 
 
 class Menu:
-    '''Display a menu and respond to choices when run.'''
+    '''
+    Display a menu and respond to choices when run.
+    '''
     def __init__(self):
         self.notebook = Notebook()
         self.choices = {
@@ -27,6 +29,7 @@ class Menu:
     def run(self):
         '''Display the menu and respond to choices.'''
         while True:
+            # Constantly display menu and get the option
             self.display_menu()
             choice = input("Enter an option: ")
             action = self.choices.get(choice)
@@ -36,14 +39,16 @@ class Menu:
                 print("{0} is not a valid choice".format(choice))
 
     def show_notes(self, notes=None):
+        # Show all nodes, or th ones needed
         if not notes:
             notes = self.notebook.notes
-            for note in notes:
-                print("{0}: {1}\n{2}".format(note.id, note.tags, note.memo))
+        for note in notes:
+            print("{0}: {1}\n{2}".format(note.id, note.tags, note.memo))
+    
     
     def search_notes(self):
-        filter = input("Search for: ")
-        notes = self.notebook.search(filter)
+        filter_str = input("Search for: ")
+        notes = self.notebook.search(filter_str)
         self.show_notes(notes)
 
     def add_note(self):
@@ -52,13 +57,12 @@ class Menu:
         print("Your note has been added.")
 
     def modify_note(self):
-        id = input("Enter a note id: ")
+        # Modify a note with new memos and tags
+        note_id = input("Enter a note id: ")
         memo = input("Enter a memo: ")
         tags = input("Enter tags: ")
-        if memo:
-            self.notebook.modify_memo(id, memo)
-        if tags:
-            self.notebook.modify_tags(id, tags)
+        if memo or tags:
+            self.notebook.modify(note_id, memo, tags)
 
     def quit(self):
         print("Thank you for using your notebook today.")
